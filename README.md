@@ -1,222 +1,172 @@
-# React 19 + Vite + Tailwind CSS v4 + ShadCN UI + zustand + React router v7 + Motion Starter Template!
+# Octant v2 Hackathon dApp Boilerplate
 
-## Version Selection
+A production-ready React boilerplate optimized for hackathon development. Get started building your dApp in minutes with modern tooling and essential libraries pre-configured.
 
-- **v2.0.0** (Latest): Includes Motion animations and animated icons
-- **v1.0.0** (Stable): Basic template without Motion/Icons - lighter and simpler
-
-## How to use
+## Quick Start
 
 ```bash
-git clone git@github.com:momolly1024/React19-Vite-Taiwlindv4-Shadcn-ReactRouterV7.git
-```
-
-```bash
-npm install --legacy-peer-deps
-```
-
-```bash
+git clone https://github.com/golemfoundation/octant-v2-hackathon-dapp-boilerplate.git
+cd octant-v2-hackathon-dapp-boilerplate
+npm install
 npm run dev
 ```
 
-## Adding New Animated Icons
+Open [http://localhost:5173](http://localhost:5173) to see your app.
 
-**Install icons** (available from https://animateicons.vercel.app/):
 
-```bash
-node install-icon.js check
-node install-icon.js heart
-node install-icon.js arrow
+## What's Included
+
+### Core Stack
+- **React 19** - Latest React with improved performance
+- **Vite** - Lightning-fast build tool and dev server
+- **TypeScript** - Type safety for better DX
+- **Tailwind CSS v4** - Utility-first styling
+- **React Router v7** - Modern client-side routing
+
+### State & Forms
+- **Zustand** - Lightweight state management (see `src/store.js`)
+- **React Hook Form** - Performant form validation
+- **Zod** - Schema validation
+
+### UI Components
+- **ShadCN UI** - High-quality, accessible components (17 ready-to-use components)
+  - Pre-configured in `src/components/ui/`
+  - Avatar, Badge, Button, Card, Checkbox, Dialog, Dropdown Menu, Form, Input, Label, Select, Separator, Skeleton, Switch, Tabs, Tooltip, Toaster
+  - **All components visible on homepage** with interactive demos!
+- **Lucide React** - Beautiful icon library (1000+ icons)
+- **Sonner** - Toast notifications
+
+### Design System
+- **Dark Theme** - Custom Octant dark theme with `#0d0d0d` background
+- **Arcane Fable Font** - Beautiful custom font for headings
+- **Optimized Colors** - Carefully selected palette for accessibility and readability
+
+### Smart Contract ABIs
+Pre-configured ABIs for Octant v2 integration:
+- **MorphoCompounderStrategyFactory** - Factory for Morpho yield strategies
+- **SkyCompounderStrategyFactory** - Factory for Sky protocol strategies
+- **YieldDonatingTokenizedStrategy** - Automated yield donation contract
+
+All ABIs are located in `src/abis/` and ready to import:
+```typescript
+import MorphoABI from '@/abis/MorphoCompounderStrategyFactory.json';
+import SkyABI from '@/abis/SkyCompounderStrategyFactory.json';
+import YieldABI from '@/abis/YieldDonatingTokenizedStrategy.json';
 ```
-
-**Note:** Only icons from the official website can be installed.
-
-## Example: BellIcon Usage
-
-```tsx
-import { BellIcon, BellIconHandle } from '@/components/icons/BellIcon';
-import { useRef } from 'react';
-
-function MyComponent() {
-  const bellRef = useRef<BellIconHandle>(null);
-  
-  // Auto-trigger on hover (default behavior)
-  
-  // Manual control functions
-  const startAnimation = () => bellRef.current?.startAnimation();
-  const stopAnimation = () => bellRef.current?.stopAnimation();
-
-  return (
-    <div>
-      {/* Auto-hover animation */}
-      <BellIcon size={32} className="text-blue-500" />
-      
-      {/* Manual control */}
-      <BellIcon 
-        ref={bellRef}
-        size={28}
-        className="cursor-pointer"
-      />
-      
-      <button onClick={startAnimation}>Start Animation</button>
-      <button onClick={stopAnimation}>Stop Animation</button>
-    </div>
-  );
-}
-```
-
-## Example: Motion Library Usage
-
-```tsx
-import { motion } from 'motion/react';
-
-function MyComponent() {
-  const items = [
-    { id: 1, content: 'Item 1' },
-    { id: 2, content: 'Item 2' },
-    { id: 3, content: 'Item 3' }
-  ];
-
-  return (
-    <div>
-      {/* Basic fade in animation */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        Fade in content
-      </motion.div>
-
-      {/* Interactive hover animation */}
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        className="bg-blue-500 text-white px-4 py-2 rounded"
-      >
-        Interactive Button
-      </motion.button>
-
-      {/* Continuous rotation */}
-      <motion.div
-        animate={{ rotate: 360 }}
-        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-        className="w-8 h-8 bg-red-500"
-      >
-        Rotating element
-      </motion.div>
-
-      {/* Staggered list animation */}
-      {items.map((item, index) => (
-        <motion.div
-          key={item.id}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: index * 0.1 }}
-        >
-          {item.content}
-        </motion.div>
-      ))}
-    </div>
-  );
-}
-```
-
-## Icon Properties
-
-- **size**: `number` - Icon size in pixels (default: 28)
-- **className**: `string` - Additional CSS classes
-- **ref**: `BellIconHandle` - For manual animation control
-- All standard HTMLMotionProps are supported
-
-## Available Methods (via ref)
-
-- `startAnimation()` - Start the animation manually
-- `stopAnimation()` - Stop the animation and return to normal state
-
-## File Structure for Icons
-
-```
-src/
-  components/
-    icons/
-      BellIcon.tsx
-      CheckIcon.tsx
-      HeartIcon.tsx
-      [OtherIcon].tsx
-  lib/
-    utils.ts (required for cn function)
-```
-
-## Prettier Configuration
-
-`.prettierrc`
-
-```js
-{
-	"printWidth": 100, // Maximum line length (100 is good for React/TS projects)
-	"tabWidth": 4, // Use 4 spaces per indentation level
-	"useTabs": false, // Indent with spaces, not tabs
-	"semi": true, // Always add semicolons
-	"singleQuote": true, // Use single quotes instead of double quotes
-	"trailingComma": "es5", // Add trailing commas where valid in ES5 (objects, arrays, etc.)
-	"bracketSpacing": true, // Add spaces between brackets: { foo: bar }
-	"jsxSingleQuote": false, // Use double quotes in JSX attributes
-	"arrowParens": "always", // Always include parentheses around arrow function arguments
-	"endOfLine": "lf", // Use LF for line endings (consistent across platforms)
-	"plugins": [
-		"prettier-plugin-tailwindcss" // Auto-sort Tailwind CSS classes
-	]
-}
-```
-
-## Version History
-
-- **2025/08/26** Add Motion library, animated BellIcon component, install script, and comprehensive animation examples
-- **2025/08/20** Add fetch fake API function and useEffect to get data
-- **2025/08/19** Optimize Home and About page style (cleaner layout with Tailwind + ShadCN)
-- **2025/08/19** Add Prettier configuration (.prettierrc) with documentation
-- **2025/05/07** Add react-i18next and demo(i18n.js)(toggleLanguage)
-- **2025/04/16** Add zustand and demo(store.js)
-- **2025/02/13** Add React router v7
-- **2025/02/13** Release
-
-## Dependencies
-
-### Core Dependencies
-
-- React 19
-- Vite 6.1.0
-- Tailwind CSS v4
-- ShadCN UI Components
-- React Router v7
-- Zustand (State Management)
-- React i18next (Internationalization)
-- Motion (Animations)
-
-### Key Features
-
-- ⚡ Lightning fast development with Vite
-- 🎨 Modern UI with Tailwind CSS v4 and ShadCN
-- 🌐 Internationalization ready
-- 📱 Responsive design
-- 🔄 State management with Zustand
-- 🎭 Smooth animations with Motion
-- 🎯 TypeScript support
-- 📋 API integration examples
-- 🔗 Modern routing with React Router v7
-- 🎨 Animated icons from animateicons.vercel.app
 
 ## Project Structure
 
 ```
 src/
-  ├── components/
-  │   ├── ui/           # ShadCN UI components
-  │   └── icons/        # Animated icon components
-  ├── pages/            # Route pages
-  ├── lib/              # Utility functions
-  ├── store.js          # Zustand store
-  ├── i18n.js          # Internationalization config
-  └── App.tsx          # Main app component
+├── abis/                # Smart contract ABIs
+│   ├── MorphoCompounderStrategyFactory.json
+│   ├── SkyCompounderStrategyFactory.json
+│   └── YieldDonatingTokenizedStrategy.json
+├── components/
+│   └── ui/              # ShadCN UI components
+├── pages/               # Your app pages/routes
+│   ├── About.tsx
+│   └── [add more here]
+├── lib/
+│   └── utils.ts         # Utility functions (cn, etc.)
+├── store.ts             # Zustand global state
+├── App.tsx              # Routes and app shell
+└── main.tsx             # App entry point
 ```
+
+## Development Guide
+
+### Exploring Components
+The homepage displays all 17 pre-built components:
+- Interactive demos you can test immediately
+- See how each component looks and behaves
+- All components are styled for the dark theme
+
+### Adding New Pages
+1. Create a new file in `src/pages/` (e.g., `Dashboard.tsx`)
+2. Add route in `src/App.tsx`:
+```tsx
+<Route path="dashboard" element={<Dashboard />} />
+```
+
+### Using Zustand State
+```tsx
+import { useCounterStore } from '@/store';
+
+function MyComponent() {
+  const { count, increment } = useCounterStore();
+  return <button onClick={increment}>{count}</button>;
+}
+```
+
+### Using ShadCN Components
+```tsx
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+
+<Card>
+  <Button>Click me</Button>
+</Card>
+```
+
+### Using Smart Contract ABIs
+```tsx
+import MorphoABI from '@/abis/MorphoCompounderStrategyFactory.json';
+import { useReadContract } from 'wagmi';
+
+function MyComponent() {
+  const { data } = useReadContract({
+    address: '0x...', // Contract address
+    abi: MorphoABI,
+    functionName: 'createStrategy',
+    args: [/* your args */]
+  });
+
+  return <div>{/* Your component */}</div>;
+}
+```
+
+### Styling with Tailwind
+Use utility classes directly in JSX:
+```tsx
+<div className="flex items-center gap-4 rounded-lg border p-6">
+  <h1 className="text-2xl font-bold">Hello</h1>
+</div>
+```
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+
+## Build for Production
+
+```bash
+npm run build
+```
+
+Output will be in the `dist/` directory, ready to deploy to any static hosting service.
+
+## Customization
+
+### Add More ShadCN Components
+Visit [ui.shadcn.com](https://ui.shadcn.com) and use their CLI:
+```bash
+npx shadcn@latest add [component-name]
+```
+
+### Modify Tailwind Config
+Edit `tailwind.config.js` for custom colors, fonts, etc.
+
+### Configure Build
+Edit `vite.config.ts` for build optimizations.
+
+## Tips for Hackathons
+
+1. **Focus on features** - UI components are ready, just build your logic
+2. **Use Zustand** for simple global state - no Redux boilerplate
+3. **Leverage Tailwind** for rapid styling - no CSS files needed
+4. **ShadCN components** are accessible and mobile-responsive out of the box
+5. **TypeScript** helps catch bugs early - use it!
