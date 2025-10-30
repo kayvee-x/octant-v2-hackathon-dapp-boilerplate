@@ -121,13 +121,13 @@ const Home = () => {
 						<div className="space-y-2 text-left text-sm">
 							<p className="text-muted-foreground">Import the ABI in your component:</p>
 							<code className="block rounded-md bg-muted p-3">
-								{`import MorphoABI from '@/abis/MorphoCompounderStrategyFactory.json';`}
+								{`import MorphoCompounderStrategyFactoryABI from '@/abis/MorphoCompounderStrategyFactory.json';`}
 							</code>
 							<p className="mt-3 text-muted-foreground">Use with wagmi or viem:</p>
 							<code className="block rounded-md bg-muted p-3">
 								{`const { data } = useReadContract({
   address: '0x...',
-  abi: MorphoABI,
+  abi: MorphoCompounderStrategyFactoryABI,
   functionName: 'createStrategy'
 });`}
 							</code>
