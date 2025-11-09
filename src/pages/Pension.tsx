@@ -14,7 +14,7 @@ import { toast } from 'sonner';
 import PensionABI from '@/abis/PensionStrategy.json';
 import SDAI_ABI from '@/abis/sDAI.json'; // sDAI ABI for yield read
 import SUSDS_ABI from '@/abis/sUSDS.json'; // sUSDS ABI for yield read
-import USDC_ABI from '@/abis/USDC.json'; // For DAI 
+import USDC_ABI from '@/abis/USDC.json'; // For DAI (reuse ERC20 ABI)
 
 const STRATEGY_ADDRESS = '0xYOUR_DEPLOYED_STRATEGY_HERE' as `0x${string}`;
 const DAI_ADDRESS = '0x6B175474E89094C44Da98b954EedeAC495271d0F' as `0x${string}`; // DAI mainnet (underlying for sDAI)
@@ -24,8 +24,8 @@ const SUSDS_ADDRESS = '0xa3931d71877C0e7A3148CB7Eb4463524FEc27fbD' as `0x${strin
 export default function PensionPage() {
   const { address, isConnected } = useAccount();
   const { writeContractAsync, isPending } = useWriteContract();
+  // State for inputs
   const [depositAmount, setDepositAmount] = useState('');
-  const [withdrawAmount, setWithdrawAmount] = useState('');
   const [newBeneficiary, setNewBeneficiary] = useState('');
   const [claimOwner, setClaimOwner] = useState('');
   // ---------- Reads ----------
@@ -78,8 +78,9 @@ export default function PensionPage() {
     args: address ? [address, STRATEGY_ADDRESS] : ['0x0000000000000000000000000000000000000000', STRATEGY_ADDRESS],
     query: { enabled: !!address },
   });
+  // Additional reads for sDAI/sUSDS yield (from tutorial)
   const { data: sDAI_balance } = useReadContract({
-    address: STRATEGY_ADDRESS, 
+    address: STRATEGY_ADDRESS, // Assume strategy exposes or read from vault
     abi: SDAI_ABI,
     functionName: 'balanceOf',
     args: [address],
@@ -149,21 +150,6 @@ export default function PensionPage() {
       setDepositAmount('');
     } catch (err) {
       toast.error((err as BaseError).shortMessage || 'Deposit failed');
-    }
-  };
-  const withdraw = async () => {
-    if (!isValidAmount(withdrawAmount) || !isConnected || isLocked) return toast.error(isLocked ? 'Vesting locked' : 'Invalid amount or wallet');
-    try {
-      const hash = await writeContractAsync({
-        address: STRATEGY_ADDRESS,
-        abi: PensionABI,
-        functionName: 'withdraw',
-        args: [parseUnits(withdrawAmount, 18), address!, address!], // 18 decimals
-      });
-      toast.success(`Withdrawn DAI! Tx: ${hash}`);
-      setWithdrawAmount('');
-    } catch (err) {
-      toast.error((err as BaseError).shortMessage || 'Withdraw failed');
     }
   };
   const setBeneficiary = async () => {
@@ -286,6 +272,7 @@ export default function PensionPage() {
                 <p>DAI Allowance: {daiAllowance ? formatUnits(BigInt(daiAllowance.toString()), 18) : '0'}</p>
                 <p>sDAI Yield Estimate: {sDAI_assets ? formatUnits(BigInt(sDAI_assets.toString()), 18) : '0'}</p>
                 <p>sUSDS Yield Estimate: {sUSDS_assets ? formatUnits(BigInt(sUSDS_assets.toString()), 18) : '0'}</p>
+                <p>Estimated Total Yield: ~${estimatedYield.toFixed(2)}</p>
                 <p>Vesting Lock: {isLocked ? `Locked until ~${new Date(lockEnd * 1000).toLocaleString()}` : 'Unlocked ✅'}</p>
                 <p>Claimable Months: {claimableMonths}</p>
                 <p>Estimated Monthly: ~${estimatedMonthly.toFixed(2)}</p>
@@ -367,4 +354,3 @@ export default function PensionPage() {
     </div>
   );
 }
-
