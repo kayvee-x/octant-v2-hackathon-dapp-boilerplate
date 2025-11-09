@@ -1,401 +1,249 @@
-import { useState } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router';
+import { ConnectButton } from '@rainbow-me/rainbowkit'; // Fixed header wallet connect
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Switch } from '@/components/ui/switch';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from '@/components/ui/select';
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from '@/components/ui/dialog';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Skeleton } from '@/components/ui/skeleton';
-import { toast } from 'sonner';
+import { Calendar, CreditCard, Lock, Shield, User, Wallet } from 'lucide-react';
 import About from '@/pages/About';
+import Pension from '@/pages/Pension';
 import { Toaster } from '@/components/ui/sonner';
 import './App.css';
 
-const Home = () => {
-	const [checked, setChecked] = useState(false);
-	const [switched, setSwitched] = useState(false);
-
-	return (
-		<div className="container mx-auto min-h-screen space-y-16 px-4 py-12">
-			{/* Hero Section */}
-			<header className="space-y-1 text-center">
-				<h1 className="text-6xl font-bold md:text-7xl lg:text-8xl">Octant v2</h1>
-				<h2 className="text-muted-foreground text-3xl font-bold md:text-4xl lg:text-5xl">
-					Hackathon Boilerplate
-				</h2>
-			</header>
-
-			<Separator />
-
-			{/* Octant Documentation */}
-			<section className="space-y-8">
-				<div className="mx-auto max-w-2xl">
-					<Card className="space-y-4 p-8 text-center">
-						<h3 className="text-5xl font-semibold">Getting Started</h3>
-						<p className="text-muted-foreground">
-							Introduction to Octant v2 architecture and core concepts
-						</p>
-						<a
-							href="https://docs.v2.octant.build/"
-							target="_blank"
-							rel="noopener noreferrer"
-							className="block"
-						>
-							<Button className="w-full">View Documentation</Button>
-						</a>
-					</Card>
-				</div>
-			</section>
-
-			<Separator />
-
-			{/* Smart Contract ABIs */}
-			<section className="space-y-8">
-				<div className="space-y-2 text-center">
-					<h2 className="text-3xl font-bold md:text-4xl">Smart Contract ABIs</h2>
-					<p className="text-muted-foreground">
-						Pre-configured ABIs ready to use in your dApp
-					</p>
-				</div>
-
-				<div className="grid gap-6 md:grid-cols-3">
-					<Card className="space-y-4 p-6">
-						<h3 className="text-lg font-semibold">
-							Morpho Compounder Strategy Factory
-						</h3>
-						<p className="text-sm text-muted-foreground">
-							Factory contract for creating Morpho yield compounding strategies
-						</p>
-						<code className="block text-xs">src/abis/MorphoCompounderStrategyFactory.json</code>
-					</Card>
-
-					<Card className="space-y-4 p-6">
-						<h3 className="text-lg font-semibold">Sky Compounder Strategy Factory</h3>
-						<p className="text-sm text-muted-foreground">
-							Factory contract for creating Sky protocol compounding strategies
-						</p>
-						<code className="block text-xs">src/abis/SkyCompounderStrategyFactory.json</code>
-					</Card>
-
-					<Card className="space-y-4 p-6">
-						<h3 className="text-lg font-semibold">Yield Donating Tokenized Strategy</h3>
-						<p className="text-sm text-muted-foreground">
-							Strategy contract for automated yield donations with tokenization
-						</p>
-						<code className="block text-xs">src/abis/YieldDonatingTokenizedStrategy.json</code>
-					</Card>
-				</div>
-
-				<div className="mx-auto max-w-3xl">
-					<Card className="p-6">
-						<h4 className="mb-3 text-lg font-semibold">How to Use ABIs</h4>
-						<div className="space-y-2 text-left text-sm">
-							<p className="text-muted-foreground">Import the ABI in your component:</p>
-							<code className="block rounded-md bg-muted p-3">
-								{`import MorphoCompounderStrategyFactoryABI from '@/abis/MorphoCompounderStrategyFactory.json';`}
-							</code>
-							<p className="mt-3 text-muted-foreground">Use with wagmi or viem:</p>
-							<code className="block rounded-md bg-muted p-3">
-								{`const { data } = useReadContract({
-  address: '0x...',
-  abi: MorphoCompounderStrategyFactoryABI,
-  functionName: 'createStrategy'
-});`}
-							</code>
-						</div>
-					</Card>
-				</div>
-			</section>
-
-			<Separator />
-
-			{/* Available Components Grid */}
-			<section className="space-y-8">
-				<h2 className="text-center text-5xl font-bold ">Components</h2>
-				<p className="text-muted-foreground text-center">
-					All components are ready to use. Copy the code and start building.
-				</p>
-
-				<div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-					{/* Buttons Card */}
-					<Card className="space-y-4 p-6">
-						<h3 className="text-xl font-semibold">Buttons</h3>
-						<div className="space-y-2">
-							<Button className="w-full" size="sm">
-								Primary
-							</Button>
-							<Button variant="secondary" className="w-full" size="sm">
-								Secondary
-							</Button>
-							<Button variant="outline" className="w-full" size="sm">
-								Outline
-							</Button>
-							<Button variant="destructive" className="w-full" size="sm">
-								Destructive
-							</Button>
-						</div>
-					</Card>
-
-					{/* Inputs Card */}
-					<Card className="space-y-4 p-6">
-						<h3 className="text-xl font-semibold">Inputs</h3>
-						<div className="space-y-2">
-							<Label htmlFor="demo">Label</Label>
-							<Input id="demo" placeholder="Type here..." />
-						</div>
-					</Card>
-
-					{/* Select Card */}
-					<Card className="space-y-4 p-6">
-						<h3 className="text-xl font-semibold">Select</h3>
-						<Select>
-							<SelectTrigger>
-								<SelectValue placeholder="Choose option" />
-							</SelectTrigger>
-							<SelectContent>
-								<SelectItem value="1">Option 1</SelectItem>
-								<SelectItem value="2">Option 2</SelectItem>
-								<SelectItem value="3">Option 3</SelectItem>
-							</SelectContent>
-						</Select>
-					</Card>
-
-					{/* Checkbox & Switch Card */}
-					<Card className="space-y-4 p-6">
-						<h3 className="text-xl font-semibold">Checkbox & Switch</h3>
-						<div className="space-y-3">
-							<div className="flex items-center space-x-2">
-								<Checkbox
-									id="terms"
-									checked={checked}
-									onCheckedChange={(value) => setChecked(value === true)}
-								/>
-								<Label htmlFor="terms" className="text-sm">
-									Accept terms
-								</Label>
-							</div>
-							<div className="flex items-center space-x-2">
-								<Switch
-									id="mode"
-									checked={switched}
-									onCheckedChange={setSwitched}
-								/>
-								<Label htmlFor="mode" className="text-sm">
-									Enable mode
-								</Label>
-							</div>
-						</div>
-					</Card>
-
-					{/* Dialog Card */}
-					<Card className="space-y-4 p-6">
-						<h3 className="text-xl font-semibold">Dialog</h3>
-						<Dialog>
-							<DialogTrigger asChild>
-								<Button variant="outline" className="w-full">
-									Open Dialog
-								</Button>
-							</DialogTrigger>
-							<DialogContent>
-								<DialogHeader>
-									<DialogTitle>Dialog Title</DialogTitle>
-									<DialogDescription>
-										This is a dialog modal for confirmations or forms.
-									</DialogDescription>
-								</DialogHeader>
-								<div className="py-4">
-									<Input placeholder="Example input" />
-								</div>
-							</DialogContent>
-						</Dialog>
-					</Card>
-
-					{/* Toast Card */}
-					<Card className="space-y-4 p-6">
-						<h3 className="text-xl font-semibold">Toast (Sonner)</h3>
-						<div className="space-y-2">
-							<Button
-								size="sm"
-								className="w-full"
-								onClick={() => toast.success('Success!')}
-							>
-								Success
-							</Button>
-							<Button
-								size="sm"
-								variant="destructive"
-								className="w-full"
-								onClick={() => toast.error('Error!')}
-							>
-								Error
-							</Button>
-						</div>
-					</Card>
-
-					{/* Tabs Card */}
-					<Card className="space-y-4 p-6">
-						<h3 className="text-xl font-semibold">Tabs</h3>
-						<Tabs defaultValue="tab1">
-							<TabsList className="grid w-full grid-cols-2">
-								<TabsTrigger value="tab1">Tab 1</TabsTrigger>
-								<TabsTrigger value="tab2">Tab 2</TabsTrigger>
-							</TabsList>
-							<TabsContent value="tab1" className="text-sm">
-								Content for tab 1
-							</TabsContent>
-							<TabsContent value="tab2" className="text-sm">
-								Content for tab 2
-							</TabsContent>
-						</Tabs>
-					</Card>
-
-					{/* Avatar Card */}
-					<Card className="space-y-4 p-6">
-						<h3 className="text-xl font-semibold">Avatar</h3>
-						<div className="flex justify-center gap-3">
-							<Avatar>
-								<AvatarImage src="https://github.com/shadcn.png" />
-								<AvatarFallback>CN</AvatarFallback>
-							</Avatar>
-							<Avatar>
-								<AvatarFallback>AB</AvatarFallback>
-							</Avatar>
-							<Avatar>
-								<AvatarFallback>XY</AvatarFallback>
-							</Avatar>
-						</div>
-					</Card>
-
-					{/* Tooltip Card */}
-					<Card className="space-y-4 p-6">
-						<h3 className="text-xl font-semibold">Tooltip</h3>
-						<TooltipProvider>
-							<Tooltip>
-								<TooltipTrigger asChild>
-									<Button variant="outline" className="w-full">
-										Hover me
-									</Button>
-								</TooltipTrigger>
-								<TooltipContent>
-									<p>Tooltip content</p>
-								</TooltipContent>
-							</Tooltip>
-						</TooltipProvider>
-					</Card>
-
-					{/* Dropdown Menu Card */}
-					<Card className="space-y-4 p-6">
-						<h3 className="text-xl font-semibold">Dropdown Menu</h3>
-						<DropdownMenu>
-							<DropdownMenuTrigger asChild>
-								<Button variant="outline" className="w-full">
-									Open Menu
-								</Button>
-							</DropdownMenuTrigger>
-							<DropdownMenuContent>
-								<DropdownMenuLabel>My Account</DropdownMenuLabel>
-								<DropdownMenuSeparator />
-								<DropdownMenuItem>Profile</DropdownMenuItem>
-								<DropdownMenuItem>Settings</DropdownMenuItem>
-							</DropdownMenuContent>
-						</DropdownMenu>
-					</Card>
-
-					{/* Badge Card */}
-					<Card className="space-y-4 p-6">
-						<h3 className="text-xl font-semibold">Badge</h3>
-						<div className="flex flex-wrap gap-2">
-							<Badge>Default</Badge>
-							<Badge variant="secondary">Secondary</Badge>
-							<Badge variant="outline">Outline</Badge>
-							<Badge variant="destructive">Destructive</Badge>
-						</div>
-					</Card>
-
-					{/* Separator Card */}
-					<Card className="space-y-4 p-6">
-						<h3 className="text-xl font-semibold">Separator</h3>
-						<div>
-							<p className="text-sm">Section 1</p>
-							<Separator className="my-2" />
-							<p className="text-sm">Section 2</p>
-							<Separator className="my-2" />
-							<p className="text-sm">Section 3</p>
-						</div>
-					</Card>
-
-					{/* Skeleton Card */}
-					<Card className="space-y-4 p-6">
-						<h3 className="text-xl font-semibold">Skeleton</h3>
-						<div className="space-y-2">
-							<Skeleton className="h-4 w-full" />
-							<Skeleton className="h-4 w-3/4" />
-							<Skeleton className="h-4 w-1/2" />
-						</div>
-					</Card>
-
-					{/* Form / Label Card */}
-					<Card className="space-y-4 p-6">
-						<h3 className="text-xl font-semibold">Form / Label</h3>
-						<div className="space-y-2">
-							<Label htmlFor="example">Email</Label>
-							<Input id="example" type="email" placeholder="email@example.com" />
-						</div>
-					</Card>
-				</div>
-			</section>
-
-			{/* Footer */}
-			<footer className="pt-8 pb-8 text-center">
-				<Link to="/about">
-					<Button variant="ghost" size="sm">
-						About this template
-					</Button>
-				</Link>
-			</footer>
-		</div>
-	);
-};
-
 function App() {
-	return (
-		<BrowserRouter>
-			<Routes>
-				<Route index element={<Home />} />
-				<Route path="about" element={<About />} />
-			</Routes>
-			<Toaster />
-		</BrowserRouter>
-	);
+  return (
+    <BrowserRouter>
+      {/* FIXED HEADER – ConnectButton + Address + Navigation (All Pages) */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border shadow-sm">
+        <div className="container mx-auto flex items-center justify-between px-4 py-3">
+          <Link to="/" className="text-xl font-bold">
+            Onchain Pension Fund
+          </Link>
+          <nav className="flex items-center space-x-4">
+            <Link to="/">
+              <Button variant="ghost" size="sm">
+                Home
+              </Button>
+            </Link>
+            <Link to="/pension">
+              <Button variant="ghost" size="sm">
+                Vault
+              </Button>
+            </Link>
+            <Link to="/about">
+              <Button variant="ghost" size="sm">
+                About
+              </Button>
+            </Link>
+            <ConnectButton /> 
+          </nav>
+        </div>
+      </header>
+
+      {/* Main Content – Scrollable below header */}
+      <main className="pt-16"> {/* Offset for fixed header */}
+        <Routes>
+          <Route index element={<Home />} />
+          <Route path="about" element={<About />} />
+          <Route path="pension" element={<Pension />} />
+        </Routes>
+      </main>
+      <Toaster />
+    </BrowserRouter>
+  );
 }
+
+const Home = () => {
+  return (
+    <div className="container mx-auto min-h-screen space-y-16 px-4 py-12">
+      {/* Hero Section */}
+      <header className="space-y-4 text-center">
+        <h1 className="text-5xl font-bold md:text-6xl lg:text-7xl">
+          Onchain Pension Fund
+        </h1>
+        <p className="text-xl text-muted-foreground md:text-2xl">
+          A trustless DeFi vault for retirement savings on Octant v2. Deposit USDC, earn yield from Aave, Yearn, and Spark, with vesting and inheritance.
+        </p>
+        <div className="flex flex-wrap justify-center gap-2 mt-4">
+          <Badge variant="secondary">Yield Donating</Badge>
+          <Badge variant="secondary">Public Goods</Badge>
+          <Badge variant="secondary">Aave v3</Badge>
+          <Badge variant="secondary">Kalani</Badge>
+          <Badge variant="secondary">Spark</Badge>
+        </div>
+        <Link to="/pension">
+          <Button size="lg" className="mt-6 text-lg">
+            <Wallet className="mr-2 h-5 w-5" />
+            Get Started – Launch Vault
+          </Button>
+        </Link>
+      </header>
+
+      <Separator />
+
+      {/* Step-by-Step Guide */}
+      <section className="space-y-8">
+        <h2 className="text-3xl font-bold text-center">How It Works: Step by Step</h2>
+        <p className="text-muted-foreground text-center max-w-2xl mx-auto">
+          Follow these steps to set up your onchain pension. No KYC, global, and auditable.
+        </p>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <Card className="space-y-4 p-6">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center">
+                <Wallet className="h-6 w-6 mr-2" />
+                1. Connect Wallet
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>
+                Connect MetaMask or WalletConnect. Switch to Ethereum Mainnet. Get test USDC from a faucet if needed (for demo).
+              </CardDescription>
+            </CardContent>
+          </Card>
+
+          <Card className="space-y-4 p-6">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center">
+                <Shield className="h-6 w-6 mr-2" />
+                2. Deposit USDC
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>
+                Approve and deposit USDC. Funds vest over 30 days (initial lock), then 30 years (360 monthly claims). Yield from Aave, Yearn, Spark.
+              </CardDescription>
+            </CardContent>
+          </Card>
+
+          <Card className="space-y-4 p-6">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center">
+                <User className="h-6 w-6 mr-2" />
+                3. Set Beneficiary
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>
+                Designate a beneficiary for inheritance. Claimable after 365 days inactivity.
+              </CardDescription>
+            </CardContent>
+          </Card>
+
+          <Card className="space-y-4 p-6">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center">
+                <Calendar className="h-6 w-6 mr-2" />
+                4. Claim Monthly
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>
+                After vesting, claim monthly (principal + 99% yield; 1% fee to management). One-click to bank via Ramp.
+              </CardDescription>
+            </CardContent>
+          </Card>
+
+          <Card className="space-y-4 p-6">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center">
+                <CreditCard className="h-6 w-6 mr-2" />
+                5. Offramp to Bank
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>
+                Claim + convert to USD, send to virtual bank account (auto-created with Stripe). No KYC for small amounts.
+              </CardDescription>
+            </CardContent>
+          </Card>
+
+          <Card className="space-y-4 p-6">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center">
+                <Lock className="h-6 w-6 mr-2" />
+                6. Yield Donation
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>
+                99% yield donated to Gitcoin (public goods). Track via Etherscan.
+              </CardDescription>
+            </CardContent>
+          </Card>
+        </div>
+        <div className="text-center">
+          <Link to="/pension">
+            <Button size="lg" className="mt-8">
+              Launch Pension Vault
+            </Button>
+          </Link>
+        </div>
+      </section>
+
+      <Separator />
+
+      {/* Features & Bounties */}
+      <section className="space-y-8">
+        <h2 className="text-3xl font-bold text-center">Why This Works</h2>
+        <div className="grid gap-6 md:grid-cols-3">
+          <Card className="space-y-4 p-6">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center">
+                <Shield className="h-6 w-6 mr-2" />
+                Secure & Auditable
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>
+                ReentrancyGuard, Pausable, Ownable. Yield from audited Aave/Yearn/Spark. 1% fee on yield only.
+              </CardDescription>
+            </CardContent>
+          </Card>
+          <Card className="space-y-4 p-6">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center">
+                <Calendar className="h-6 w-6 mr-2" />
+                Vesting & Inheritance
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>
+                30-day lock, 360 monthly claims. Beneficiary claims after 365 days inactivity.
+              </CardDescription>
+            </CardContent>
+          </Card>
+          <Card className="space-y-4 p-6">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center">
+                <CreditCard className="h-6 w-6 mr-2" />
+                Fiat Offramp
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>
+                One-click claim + Ramp to USD/bank. Virtual accounts via Stripe Treasury.
+              </CardDescription>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      <Separator />
+
+      {/* Footer */}
+      <footer className="pt-8 pb-8 text-center">
+        <Link to="/about">
+          <Button variant="ghost" size="sm">
+            About & Bounties
+          </Button>
+        </Link>
+        <p className="text-sm text-muted-foreground mt-2">
+          Built for Octant v2 Hackathon – Decentralizing Retirement with DeFi.
+        </p>
+      </footer>
+    </div>
+  );
+};
 
 export default App;

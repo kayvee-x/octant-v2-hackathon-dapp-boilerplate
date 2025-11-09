@@ -1,47 +1,99 @@
 import { Link } from 'react-router';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 
 const About = () => {
-	return (
-		<div className="mx-auto max-w-4xl space-y-8 p-8">
-			<header>
-				<h1 className="text-3xl font-bold">About This Template</h1>
-				<p className="mt-2 text-muted-foreground">
-					A minimal, production-ready boilerplate for the Octant v2 Hackathon
-				</p>
-			</header>
+  return (
+    <div className="mx-auto max-w-4xl space-y-8 p-8">
+      <header>
+        <h1 className="text-3xl font-bold">About Onchain Pension Fund</h1>
+        <p className="mt-2 text-muted-foreground">
+          A decentralized, onchain pension fund administrator built on Octant v2's Yield Donating Vaults.
+        </p>
+      </header>
 
-			<Card className="p-6">
-				<h2 className="mb-4 text-xl font-semibold">What's Included</h2>
-				<ul className="list-inside list-disc space-y-2 text-sm">
-					<li>React 19 with TypeScript</li>
-					<li>Vite for fast builds and HMR</li>
-					<li>Tailwind CSS v4 for styling</li>
-					<li>ShadCN UI components</li>
-					<li>React Router v7 for navigation</li>
-					<li>Zustand for state management</li>
-					<li>React Hook Form + Zod for forms</li>
-					<li>Lucide React for icons</li>
-				</ul>
-			</Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Project Overview</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <CardDescription>
+            This project introduces a decentralized, onchain pension fund administrator built on Octant v2's Yield Donating Vaults. It aims to disrupt and replace traditional pension institutions by providing a trustless, global alternative for retirement savings. Traditional pensions suffer from high fees (1-2%), opacity, centralized control, and limited accessibility—often requiring employers or specific geographies. Our solution leverages DeFi to enable:
+            <ul className="list-disc mt-4 ml-4 space-y-1">
+              <li><strong>Permissionless Participation:</strong> Anyone can deposit USDC (simulating employee/employer contributions) without KYC or intermediaries.</li>
+              <li><strong>Transparent Yield Generation:</strong> Funds are diversified across high-yield protocols (Aave v3 Vaults, Spark, Yearn v3), generating sustainable returns.</li>
+              <li><strong>Vesting and Security:</strong> Time-locked withdrawals (minimum 30 days) to mimic pension vesting, preventing impulsive spending.</li>
+              <li><strong>Inheritance Mechanisms:</strong> Beneficiaries can claim funds after an inactivity period (365 days), simulating payouts for death or disability.</li>
+              <li><strong>Social Impact via Public Goods:</strong> Excess yield is automatically donated to a configurable "Pension DAO" multisig, funding web3 contributor "retirements" (e.g., OSS developers via Gitcoin), creating a self-sustaining ecosystem.</li>
+              <li><strong>Cost Efficiency:</strong> DeFi fees (~0.5%) vs. traditional 1-2%; fully auditable onchain.</li>
+              <li><strong>Programmability:</strong> Future extensions for recurring deposits (e.g., via Gelato), tax reporting, or multi-asset support.</li>
+            </ul>
+          </CardDescription>
+        </CardContent>
+      </Card>
 
-			<Card className="p-6">
-				<h2 className="mb-4 text-xl font-semibold">Getting Started</h2>
-				<ol className="list-inside list-decimal space-y-2 text-sm">
-					<li>Start building your features in <code className="rounded bg-muted px-1">src/pages/</code></li>
-					<li>Add new routes in <code className="rounded bg-muted px-1">src/App.tsx</code></li>
-					<li>Use ShadCN components from <code className="rounded bg-muted px-1">src/components/ui/</code></li>
-					<li>Style with Tailwind utility classes</li>
-					<li>Manage global state with Zustand</li>
-				</ol>
-			</Card>
+      <Separator />
 
-			<Link to="/">
-				<Button variant="outline">← Back to Home</Button>
-			</Link>
-		</div>
-	);
+      <Card>
+        <CardHeader>
+          <CardTitle>Features</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <CardDescription>
+            <ul className="list-disc ml-4 space-y-1">
+              <li><strong>Diversified Investment Strategy:</strong> Allocates deposits equally (~33%) to Aave v3 Vault, Spark Lending, and Yearn v3 Vault (deployed via Kalani) for risk-managed yield.</li>
+              <li><strong>Pension-Like Mechanics:</strong>
+                <ul className="list-disc ml-4 mt-2">
+                  <li>Time-locked withdrawals to enforce long-term saving.</li>
+                  <li>Beneficiary designation and claim function for secure inheritance.</li>
+                </ul>
+              </li>
+              <li><strong>Automated Donations:</strong> Yield beyond base is donated to public goods, configurable via constructor (e.g., Gitcoin or custom DAO).</li>
+              <li><strong>User-Friendly dApp:</strong> Simple frontend for deposits, withdrawals, beneficiary settings, and claims.</li>
+              <li><strong>Security:</strong> Inherits Octant's BaseHealthCheck; adds ReentrancyGuard and nonReentrant modifiers.</li>
+            </ul>
+          </CardDescription>
+        </CardContent>
+      </Card>
+
+      <Separator />
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Tech Stack</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <CardDescription>
+            <ul className="list-disc ml-4 space-y-1">
+              <li><strong>Smart Contracts:</strong> Solidity ^0.8.25, Foundry for testing/deployment.</li>
+              <li><strong>Base Framework:</strong> Octant v2 (YieldDonatingTokenizedStrategy, BaseHealthCheck).</li>
+              <li><strong>Integrations:</strong>
+                <ul className="list-disc ml-4 mt-2">
+                  <li>Aave v3 ERC-4626 Vault.</li>
+                  <li>Spark Lending Pool.</li>
+                  <li>Yearn v3 Vault (deployed with Kalani).</li>
+                </ul>
+              </li>
+              <li><strong>Frontend:</strong> Vite (React, wagmi) for wallet interactions.</li>
+              <li><strong>Chain:</strong> Ethereum Sepolia testnet (mainnet compatible).</li>
+              <li><strong>Dependencies:</strong> OpenZeppelin, Spark, Yearn, Aave libraries.</li>
+            </ul>
+          </CardDescription>
+        </CardContent>
+      </Card>
+
+      <Separator />
+
+      <div className="text-center">
+        <Link to="/">
+          <Button variant="outline" className="mt-6">
+            ← Back to Home
+          </Button>
+        </Link>
+      </div>
+    </div>
+  );
 };
 
 export default About;
